@@ -1,53 +1,73 @@
 const nodemailer = require('nodemailer')
 const fs =require('fs')
-pathToAttachment = `${__dirname}/Resume.pdf`
+const constants = require('./Constants')
+const getEmailBody = require('./EmailBody')
+
+
+pathToAttachment = `${__dirname}/${constants.fileName}`
 attachment = fs.readFileSync(pathToAttachment).toString("base64")
+
+
 const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    service:'gmail',
+    host: constants.host,
+    service: constants.service,
     // port: 2525,
     // secure:true,
     auth:{
-        user:"johndoe@gmail.com",
-        pass:process.env.PASSWORD
-      
+        user:constants.senderEmail,
+        pass:process.env.PASSWORD      
     }
 })
-const sendMail= async(name,email,bccE)=>{
-    const body ="Hi,\nI'm John Doe. I'm a recent grad from fast. I am currently looking for a position as a software engineer with an esteemed organization like " +name+". I'm looking to work on the latest tools and technologies with focused interest towards the backend. I have worked on Node.js,Flutter,.Net, C++ and Python. I am confident that my background and knowledge in the Information Technology arena coupled with my strong technical skills in software languages will prove an asset to your organization and add immediate value to your organization.\nI have attached my resume and I'd love to hear from you if there is an opportunity for me.\nBest Regards\nJohn Doe"
+const sendMail = async(companyName,email,bccE)=>{
+    const body = getEmailBody(constants.senderName, companyName);    
     const options = {
         from: {
-            name: 'John Doe',
-            address: 'johndoe@gmail.com'
+            name: constants.senderName,
+            address: constants.senderEmail
         },
         to: email,
         bcc:bccE,
-        subject: "Software Engineer",
-        text: body,
+        subject: constants.subject,
+        text:body,
         attachments :[
             {
               content: attachment,
-                filename: "Resume.pdf",
-                contentType: "application/pdf",
-                path: "Resume.pdf"
+              filename: constants.filename,
+              contentType: constants.contentType,
+              path: constants.filePath
             }
         ]
     }
-    transporter.sendMail(options,  function(error, info){
-        if(error){
-           console.log(error.response)
-           addEmail(name,email,bccE,error)
-           return
-        }
-        console.log(info.response)
-   })
+
+    //****************Code for sending email synchronously*********************
+    
+    try{
+    result = await transporter.sendMail(options);
+    console.log(result.response)
+    }
+    catch(e){
+        addEmail(companyName,email,bccE,e)
+        console.log(e.response)
+    } 
+    //******************************END************************************ */
+
+    //****************Code for sending email asynchronously*********************
+//     transporter.sendMail(options,  function(error, info){
+//         if(error){
+//            console.log(error.response)
+//            addEmail(companyName,email,bccE,error)
+//            return
+//         }
+//         console.log(info.response)
+//    })
+   //********************************END************************************** */
 
    transporter.close()
    
 }
 const loadEmails= ()=>{
     try{
-        const dataBuffer = fs.readFileSync('unsent.json')
+        const dataBuffer = fs.readFileSync(constants.unsentEmails)
         const dataJSON= dataBuffer.toString()
         return JSON.parse(dataJSON)
 
@@ -65,7 +85,7 @@ const addEmail=(name,email,bccE,error)=>{
           error:error
         })
     const dataJSON=JSON.stringify(emails)
-    fs.writeFileSync('unsent.json',dataJSON)
+    fs.writeFileSync(constants.unsentEmails,dataJSON)
 }
 
 

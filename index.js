@@ -5,13 +5,17 @@ const path= './unsent.json'
 
 ///For Node Mailer
 const sendUnsentEmails=async ()=>{
+    
     const dataBuffer = fs.readFileSync('currentUnsent.json')
     const dataJSON= dataBuffer.toString()
     const a= JSON.parse(dataJSON)
+
     let count =0
     let check
+    
     for (let i=0;i<companyAndEmails.length;i++){
         check = a.find((company)=>company.name==companyAndEmails[i].companyName) 
+        
         if(companyAndEmails[i].allEmails.length>1 && check!= undefined  ){
             // console.log(check.name)
             count=count+1
@@ -31,6 +35,7 @@ const sendUnsentEmails=async ()=>{
 const sendAllEmails=async()=>{
     let count =0
     let check
+    
     for (let i=0;i<companyAndEmails.length;i++){ 
         if(companyAndEmails[i].allEmails.length>1 ){
           
@@ -53,12 +58,12 @@ const sendAllEmails=async()=>{
 //To see the the list of faied sent emails
 // a=loadEmails()
 // console.log(a.length)
-bcc=[]
+// bcc=[]
 
 
 if(fs.existsSync(path)){    
      fs.rename('unsent.json','currentUnsent.json' ,(err)=>{})  
-     sendUnsentEmails().then((data)=>{
+      sendUnsentEmails().then((data)=>{
      console.log("deleted")   
      fs.unlinkSync('currentUnsent.json')  
    })  
@@ -66,7 +71,6 @@ if(fs.existsSync(path)){
 else{
     sendAllEmails()
 }
-
 
 
 

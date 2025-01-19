@@ -1,15 +1,16 @@
 let constants ={
-    senderName: 'Ali',
-    senderEmail: "testxyz20@gmail.com",
+    senderName: 'Ali Abdullah Test',
+    senderEmail: "aliabdullah_test12@gmail.com",
     subject: "Software Engineer",
     fileName: "resume.pdf",
     contentType: "application/pdf",
     filePath: "resume.pdf",
-    startRowNum:2,
-    endRowNuM:4,
+    startRowNum:1,
+    endRowNuM:100,
     host: "smtp.gmail.com",
     service:'gmail',
-    unsentEmails: 'unsent.json'
+    unsentEmails: 'unsent.json',
+    password:"test1234"
 }
 
 

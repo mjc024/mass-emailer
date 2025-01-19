@@ -2,7 +2,7 @@ const getEmailBody = (senderName,compnayName)=>{
 
 const body = `Hi,
 
-I hope this email finds you well. My name is ${senderName} and I am writing to express my interest in the position of Software Engineer at an esteemed organization like ${compnayName}.
+I hope this email finds you well. My name is ${senderName} and I am writing to express my interest in the position of Software Engineer working at an esteemed organization like ${compnayName}.
 
 As an experienced software engineer with a solid background in Java, Spring Boot, SQL, Mongo, and Node.js, I am confident that I have the skills and expertise necessary to make a valuable contribution to your team. I have designed and implemented service-oriented architectures and RESTful web services using Spring Boot and Node.js.
 

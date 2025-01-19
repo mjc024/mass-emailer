@@ -11,11 +11,9 @@ attachment = fs.readFileSync(pathToAttachment).toString("base64")
 const transporter = nodemailer.createTransport({
     host: constants.host,
     service: constants.service,
-    // port: 2525,
-    // secure:true,
     auth:{
         user:constants.senderEmail,
-        pass:process.env.PASSWORD      
+        pass:constants.password      
     }
 })
 const sendMail = async(companyName,email,bccE)=>{
